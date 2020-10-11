@@ -68,19 +68,14 @@ function drawChessboard() {
   }
 }
 
-
 let gameOver = false;
 
 function moveEval() {
   if (!nextMove) {
     nextMove = findBestMove(board, playerTurn);
     if (!nextMove) {
-      console.log('could not find move', board);
       gameOver = true;
-
     }
-    console.log(nextMove);
-    console.log('set new move');
   }
 }
 
