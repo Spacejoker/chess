@@ -1,0 +1,9 @@
+.cache/
+.awcache/
+.*swp
+dist/
+node_modules/
+package-lock.json
+lib/
+# emacs backups
+*~

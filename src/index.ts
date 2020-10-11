@@ -43,7 +43,6 @@ function drawChessboard() {
   for (let x = 0; x < 8; x++) {
     for (let y = 0; y < 8; y++) {
       const piece = board.cells[y][x];
-      //if (piece.type == ) { //board.cells[y][x] != null && board.cells[y][x].type === PieceType.PAWN) {
       let gx = 7-x;
       let gy = 7-y;
       switch(piece?.type) {
@@ -54,6 +53,16 @@ function drawChessboard() {
             ctx.drawImage(pawnBlack, gx * 64, gy * 64);
           }
           break;
+          case PieceType.KING:
+          case PieceType.QUEEN:
+          case PieceType.ROOK:
+          case PieceType.BISHOP:
+          case PieceType.KNIGHT:
+            ctx.fillStyle = piece.faction == Faction.WHITE ? 'green' : 'black';
+            ctx.font = '48px serif';
+            ctx.fillText(piece.type, (gx+0.2)*64, (gy+0.8)*64);
+            break;
+
       }
     }
   }

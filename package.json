@@ -1,0 +1,48 @@
+{
+  "name": "game_ts",
+  "version": "1.0.0",
+  "description": "Hello Jugal",
+  "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "start": "webpack-dev-server --inline --open",
+    "test": "mocha"
+  },
+  "directories": {
+    "test": "./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Spacejoker/game_ts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Spacejoker/game_ts/issues"
+  },
+  "homepage": "https://github.com/Spacejoker/game_ts#readme",
+  "devDependencies": {
+    "@types/mocha": "latest",
+    "awesome-typescript-loader": "latest",
+    "browser-sync": "latest",
+    "browser-sync-webpack-plugin": "latest",
+    "css-loader": "latest",
+    "extract-text-webpack-plugin": "latest",
+    "html-webpack-plugin": "latest",
+    "json-loader": "latest",
+    "mocha": "latest",
+    "progress-bar-webpack-plugin": "latest",
+    "style-loader": "1.1.0",
+    "ts-node": "latest",
+    "tslint": "latest",
+    "typescript": "latest",
+    "webpack": "latest",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "latest"
+  },
+  "dependencies": {
+    "@types/three": "latest",
+    "three": "latest"
+  }
+}

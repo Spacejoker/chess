@@ -69,3 +69,11 @@ export function findBestMove(board: Board, faction: Faction) : Move {
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
+function updateState(board: Board, move: Move, faction: Faction) : Board {
+    const {x0, y0, x1, y1} = move;
+    board.cells[y1][x1] = board.cells[y0][x0];
+    board.cells[y0][x0] = {type:undefined, faction: Faction.WHITE};
+    faction === Faction.WHITE ? Faction.BLACK : Faction.WHITE;
+  return board;
+}
