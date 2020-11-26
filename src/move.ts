@@ -9,28 +9,33 @@ export interface Move {
 }
 
 function findRookMoves(board: Board, faction: Faction, x: number, y: number) {
+  return findFromDirs([[0,1],[0,-1],[1,0],[-1,0]], board, faction, x, y);
+}
+
+function findBishopMoves(board: Board, faction: Faction, x: number, y: number) {
+  return findFromDirs([[1,1],[1,-1],[-1,1],[-1,-1]], board, faction, x, y);
+}
+
+function findFromDirs(dirs: number[][], board: Board, faction: Faction, x0: number, y0: number) {
   const moves = [];
   const cells = board.cells;
-  const dirs = [[0,1],[0,-1],[1,0],[-1,0]];
   for (const d of dirs) {
-    let tx = x;
-    let ty = y;
+    let tx = x0;
+    let ty = y0;
     while(true) {
-      tx += d[0];
-      ty += d[1];
-      console.log('txty', tx, ty);
-      //debugger;
+      ty += d[0];
+      tx += d[1];
       if (tx > 7 || tx < 0 || ty >7 || ty < 0) {
         break;
       }
-      const targetSquare = cells[tx][ty];
+      const targetSquare = cells[ty][tx];
       if (targetSquare?.type) {
         if (targetSquare.faction != faction) {
-          moves.push({ x0: x, y0: y, x1: tx, y1: ty});
+          moves.push({ x0: x0, y0: y0, x1: tx, y1: ty});
         }
         break;
       } else {
-        moves.push({ x0: x, y0: y, x1: tx, y1: ty});
+        moves.push({ x0: x0, y0: y0, x1: tx, y1: ty});
       }
     }
   }
@@ -44,7 +49,7 @@ function findPawnMoves(board: Board, faction: Faction, x: number, y: number) {
     if (y < 7 && !board.cells[y + 1][x]?.type) {
       moves.push({ x0: x, y0: y, x1: x, y1: y + 1 });
     }
-    if (y == 1 && !board.cells[y + 2][x]?.type) {
+    if (y == 1 && !board.cells[y + 2][x]?.type && !board.cells[y + 1][x]?.type) {
       moves.push({ x0: x, y0: y, x1: x, y1: y + 2 });
     }
     if (y < 7 && x < 7) {
@@ -64,7 +69,7 @@ function findPawnMoves(board: Board, faction: Faction, x: number, y: number) {
     if (y > 0 && !board.cells[y - 1][x]?.type) {
       moves.push({ x0: x, y0: y, x1: x, y1: y - 1 });
     }
-    if (y == 6 && !board.cells[y - 2][x]?.type) {
+    if (y == 6 && !board.cells[y - 2][x]?.type && !board.cells[y - 1][x]?.type) {
       moves.push({ x0: x, y0: y, x1: x, y1: y - 2 });
     }
     if (y > 0 && x < 7) {
@@ -96,6 +101,9 @@ export function findMoves(board: Board, faction: Faction): Move[] {
         }
         if (piece?.type === PieceType.ROOK) {
           pieceMoves = findRookMoves(board, faction, x, y);
+        }
+        if (piece?.type === PieceType.BISHOP) {
+          pieceMoves = findBishopMoves(board, faction, x, y);
         }
         for (const m of pieceMoves) moves.push(m);
       }
