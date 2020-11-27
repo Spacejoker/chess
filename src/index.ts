@@ -9,6 +9,22 @@ let ctx;
 let pawnWhite = new Image()
 let pawnBlack = new Image()
 let board = {...initBoard};
+const whitePieces = {
+'K': '♔',
+'Q': '♕',
+'R': '♖',
+'B': '♗',
+'N': '♘',
+'P': '♙',
+} as const;
+const blackPieces = {
+'K': '♚',
+'Q': '♛',
+'R': '♜',
+'B': '♝',
+'N': '♞',
+'P': '♟︎',
+} as const;
 
 function init() {
   ctx = document.querySelector('canvas').getContext('2d')
@@ -47,21 +63,15 @@ function drawChessboard() {
       let gy = 7-y;
       switch(piece?.type) {
         case PieceType.PAWN:
-          if (piece.faction == Faction.WHITE) {
-            ctx.drawImage(pawnWhite, gx * 64, gy * 64);
-          } else {
-            ctx.drawImage(pawnBlack, gx * 64, gy * 64);
-          }
+        case PieceType.KING:
+        case PieceType.QUEEN:
+        case PieceType.ROOK:
+        case PieceType.BISHOP:
+        case PieceType.KNIGHT:
+          ctx.fillStyle = 'black';
+          ctx.font = '48px serif';
+          ctx.fillText(piece.faction  === Faction.WHITE ? whitePieces[piece.type] : blackPieces[piece.type], (gx+0.15)*64, (gy+0.8)*64);
           break;
-          case PieceType.KING:
-          case PieceType.QUEEN:
-          case PieceType.ROOK:
-          case PieceType.BISHOP:
-          case PieceType.KNIGHT:
-            ctx.fillStyle = piece.faction == Faction.WHITE ? 'green' : 'black';
-            ctx.font = '48px serif';
-            ctx.fillText(piece.type, (gx+0.2)*64, (gy+0.8)*64);
-            break;
 
       }
     }

@@ -1,4 +1,6 @@
-Hello Jugal
+Chess engine in TS
+
+![Screenshot](demo.png)
 
 Step 1: Install node
 

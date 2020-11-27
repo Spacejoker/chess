@@ -9,11 +9,15 @@ export interface Move {
 }
 
 function findRookMoves(board: Board, faction: Faction, x: number, y: number) {
-  return findFromDirs([[0,1],[0,-1],[1,0],[-1,0]], board, faction, x, y);
+  return findFromDirs([[0, 1], [0, -1], [1, 0], [-1, 0]], board, faction, x, y);
 }
 
 function findBishopMoves(board: Board, faction: Faction, x: number, y: number) {
-  return findFromDirs([[1,1],[1,-1],[-1,1],[-1,-1]], board, faction, x, y);
+  return findFromDirs([[1, 1], [1, -1], [-1, 1], [-1, -1]], board, faction, x, y);
+}
+
+function findQueenMoves(board: Board, faction: Faction, x: number, y: number) {
+  return findFromDirs([[1, 1], [1, -1], [-1, 1], [-1, -1], [0, 1], [0, -1], [1, 0], [-1, 0]], board, faction, x, y);
 }
 
 function findFromDirs(dirs: number[][], board: Board, faction: Faction, x0: number, y0: number) {
@@ -22,20 +26,20 @@ function findFromDirs(dirs: number[][], board: Board, faction: Faction, x0: numb
   for (const d of dirs) {
     let tx = x0;
     let ty = y0;
-    while(true) {
+    while (true) {
       ty += d[0];
       tx += d[1];
-      if (tx > 7 || tx < 0 || ty >7 || ty < 0) {
+      if (tx > 7 || tx < 0 || ty > 7 || ty < 0) {
         break;
       }
       const targetSquare = cells[ty][tx];
       if (targetSquare?.type) {
         if (targetSquare.faction != faction) {
-          moves.push({ x0: x0, y0: y0, x1: tx, y1: ty});
+          moves.push({ x0: x0, y0: y0, x1: tx, y1: ty });
         }
         break;
       } else {
-        moves.push({ x0: x0, y0: y0, x1: tx, y1: ty});
+        moves.push({ x0: x0, y0: y0, x1: tx, y1: ty });
       }
     }
   }
@@ -105,6 +109,9 @@ export function findMoves(board: Board, faction: Faction): Move[] {
         if (piece?.type === PieceType.BISHOP) {
           pieceMoves = findBishopMoves(board, faction, x, y);
         }
+        if (piece?.type === PieceType.QUEEN) {
+          pieceMoves = findQueenMoves(board, faction, x, y);
+        }
         for (const m of pieceMoves) moves.push(m);
       }
     }
@@ -112,12 +119,12 @@ export function findMoves(board: Board, faction: Faction): Move[] {
   return moves;
 }
 
-export function findBestMove(board: Board, faction: Faction) : Move {
+export function findBestMove(board: Board, faction: Faction): Move {
   const moves = findMoves(board, faction)
   const evals = [];
   for (const m of moves) {
     const newBoard = applyMove(board.cells, m, faction);
-    let evaluation = evalBoard(newBoard);
+    let evaluation : number = evalBoard(newBoard);
     if (faction == Faction.BLACK) {
       evaluation *= -1;
     }
@@ -136,7 +143,7 @@ export function findBestMove(board: Board, faction: Faction) : Move {
 }
 
 function shuffleArray(array) {
-  for(let i = array.length - 1; i > 0; i--){
+  for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * i)
     const temp = array[i]
     array[i] = array[j]
@@ -148,7 +155,7 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
-function applyMove(board: BoardState, move: Move, faction: Faction) : BoardState {
+function applyMove(board: BoardState, move: Move, faction: Faction): BoardState {
   const { x0, y0, x1, y1 } = move;
   const newBoard = board.map((a) => a.slice());
   console.log('mv', move, newBoard);
